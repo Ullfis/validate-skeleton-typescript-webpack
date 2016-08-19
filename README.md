@@ -2,8 +2,8 @@
 
 Testing validation with [Aurelia](http://aurelia.io).
 
-- [aurelia-validatejs](https://github.com/aurelia/aurelia-validatejs)
-- [aurelia-validation](https://github.com/aurelia/aurelia-validation)
+- [aurelia-validatejs](https://github.com/aurelia/validatejs)
+- [aurelia-validation](https://github.com/aurelia/validation)
 
 (tests removed)
 
