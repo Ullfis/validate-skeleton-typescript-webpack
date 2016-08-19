@@ -1,21 +1,37 @@
-//import {computedFrom} from 'aurelia-framework';
+import { computedFrom, autoinject, NewInstance } from 'aurelia-framework';
+import { ValidationController, validateTrigger } from 'aurelia-validation';
+import { ValidationRules } from 'aurelia-validatejs';
 
+@autoinject
 export class Welcome {
   heading: string = 'Welcome to the Aurelia Navigation App';
   firstName: string = 'John';
   lastName: string = 'Doe';
   previousValue: string = this.fullName;
 
+  myErrors = [];
+
+  rules = ValidationRules
+          .ensure('firstName').required()
+          .ensure('lastName').required().length({minimum:4});
+
+  constructor(private controller: ValidationController) {
+    controller.validateTrigger = validateTrigger.blur;
+  }
+
   //Getters can't be directly observed, so they must be dirty checked.
   //However, if you tell Aurelia the dependencies, it no longer needs to dirty check the property.
   //To optimize by declaring the properties that this getter is computed from, uncomment the line below
   //as well as the corresponding import above.
-  //@computedFrom('firstName', 'lastName')
+  @computedFrom('firstName', 'lastName')
   get fullName(): string {
     return `${this.firstName} ${this.lastName}`;
   }
 
   submit() {
+    this.myErrors = this.controller.validate();
+    if (this.myErrors.length > 0) return;
+
     this.previousValue = this.fullName;
     alert(`Welcome, ${this.fullName}!`);
   }

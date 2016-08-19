@@ -9,11 +9,17 @@ import 'bootstrap';
 import * as Bluebird from 'bluebird';
 Bluebird.config({ warnings: false });
 
+import {BootstrapFormValidationRenderer} from './bootstrap-form-validation-renderer';
+
 export async function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
-    .developmentLogging();
+    .developmentLogging()
+    .plugin('aurelia-validatejs')
+    .plugin('aurelia-validation');
 
+  aurelia.container.registerHandler('bootstrap-form', container => container.get(BootstrapFormValidationRenderer));
+  
   // Uncomment the line below to enable animation.
   // aurelia.use.plugin('aurelia-animator-css');
   // if the css animator is enabled, add swap-order="after" to all router-view elements
@@ -24,7 +30,7 @@ export async function configure(aurelia: Aurelia) {
   await aurelia.start();
   aurelia.setRoot('app');
 
-  // if you would like your website to work offline (Service Worker), 
+  // if you would like your website to work offline (Service Worker),
   // install and enable the @easy-webpack/config-offline package in webpack.config.js and uncomment the following code:
   /*
   const offline = await System.import('offline-plugin/runtime');

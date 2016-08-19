@@ -1,14 +1,16 @@
 <template>
   <section class="au-animate">
+
     <h2>${heading}</h2>
-    <form role="form" submit.delegate="submit()">
+
+    <form role="form" submit.delegate="submit()" validation-renderer="bootstrap-form">
       <div class="form-group">
         <label for="fn">First Name</label>
-        <input type="text" value.bind="firstName" class="form-control" id="fn" placeholder="first name">
+        <input type="text" value.bind="firstName & validate:rules" class="form-control" id="fn" placeholder="first name">
       </div>
       <div class="form-group">
         <label for="ln">Last Name</label>
-        <input type="text" value.bind="lastName" class="form-control" id="ln" placeholder="last name">
+        <input type="text" value.bind="lastName & validate:rules" class="form-control" id="ln" placeholder="last name">
       </div>
       <div class="form-group">
         <label>Full Name</label>
@@ -16,5 +18,15 @@
       </div>
       <button type="submit" class="btn btn-default">Submit</button>
     </form>
+
+    <form validation-errors.bind="myErrors">
+      <ul>
+        <li repeat.for="errorInfo of myErrors">
+          ${errorInfo.message}
+          <a href="#" click.delegate="errorInfo.target.focus()"> Fix it</a>
+        </li>
+      </ul>
+    </form>
+
   </section>
 </template>
