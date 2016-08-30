@@ -1,22 +1,25 @@
-import { computedFrom, autoinject, NewInstance } from 'aurelia-framework';
-import { ValidationController, validateTrigger } from 'aurelia-validation';
-import { ValidationRules } from 'aurelia-validatejs';
+import { computedFrom, inject, NewInstance } from 'aurelia-framework';
+import { ValidationRules, ValidationController } from "aurelia-validation";
+import { SimpleValidationRenderer } from './simpleValidationRenderer';
 
-@autoinject
+@inject(NewInstance.of(ValidationController))
 export class Welcome {
   heading: string = 'Welcome to the Aurelia Navigation App';
   firstName: string = 'John';
   lastName: string = 'Doe';
   previousValue: string = this.fullName;
 
-  myErrors = [];
+  message = '';
+  controller: ValidationController = null;
 
   rules = ValidationRules
-          .ensure('firstName').required()
-          .ensure('lastName').required().length({minimum:4});
+          .ensure('firstName').displayName("First name").required()
+          .ensure('lastName').displayName("Surname").required().minLength(4)
+          .rules;
 
-  constructor(private controller: ValidationController) {
-    controller.validateTrigger = validateTrigger.blur;
+  constructor(controller: ValidationController) {
+    this.controller = controller;
+    this.controller.addRenderer(new SimpleValidationRenderer());
   }
 
   //Getters can't be directly observed, so they must be dirty checked.
@@ -29,11 +32,17 @@ export class Welcome {
   }
 
   submit() {
-    this.myErrors = this.controller.validate();
-    if (this.myErrors.length > 0) return;
-
     this.previousValue = this.fullName;
-    alert(`Welcome, ${this.fullName}!`);
+    this.controller
+      .validate()
+      .then(v => {
+        if (v.length === 0) {
+          this.message = "All is good!";
+          alert(`Welcome, ${this.fullName}!`);
+        } else {
+          this.message = "You have errors!";
+        }
+      })
   }
 
   canDeactivate(): boolean {

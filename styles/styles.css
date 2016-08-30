@@ -127,6 +127,24 @@ div.au-stagger {
   border: 2px #FFF solid;
 }
 
+.has-error {
+  background: #fff0f0;
+}
+.validation-message-div {
+  display: inline;
+  font-size: x-small;
+  left: -6px;
+  top: -8px;
+  position: relative;
+  padding: 2px;
+  background: red;
+  color: white;
+  font-family: 'Arial', sans-serif;
+  border-radius: 5px;
+  overflow: hidden;
+  white-space: nowrap ;
+}
+
 /* animation definitions */
 @-webkit-keyframes fadeInRight {
   0% {

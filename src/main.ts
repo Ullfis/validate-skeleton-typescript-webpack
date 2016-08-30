@@ -9,17 +9,12 @@ import 'bootstrap';
 import * as Bluebird from 'bluebird';
 Bluebird.config({ warnings: false });
 
-import {BootstrapFormValidationRenderer} from './bootstrap-form-validation-renderer';
-
 export async function configure(aurelia: Aurelia) {
   aurelia.use
     .standardConfiguration()
     .developmentLogging()
-    .plugin('aurelia-validatejs')
     .plugin('aurelia-validation');
 
-  aurelia.container.registerHandler('bootstrap-form', container => container.get(BootstrapFormValidationRenderer));
-  
   // Uncomment the line below to enable animation.
   // aurelia.use.plugin('aurelia-animator-css');
   // if the css animator is enabled, add swap-order="after" to all router-view elements

@@ -3,7 +3,7 @@
 
     <h2>${heading}</h2>
 
-    <form role="form" submit.delegate="submit()" validation-renderer="bootstrap-form">
+    <form role="form" submit.delegate="submit()">
       <div class="form-group">
         <label for="fn">First Name</label>
         <input type="text" value.bind="firstName & validate:rules" class="form-control" id="fn" placeholder="first name">
@@ -17,16 +17,16 @@
         <p class="help-block">${fullName | upper}</p>
       </div>
       <button type="submit" class="btn btn-default">Submit</button>
+      <h3>${message}</h3>
     </form>
 
-    <form validation-errors.bind="myErrors">
-      <ul>
-        <li repeat.for="errorInfo of myErrors">
-          ${errorInfo.message}
-          <a href="#" click.delegate="errorInfo.target.focus()"> Fix it</a>
-        </li>
-      </ul>
-    </form>
+    <br />
+
+    <ul>
+      <li repeat.for="error of controller.errors">
+        ${error.message}
+      </li>
+    </ul>
 
   </section>
 </template>
